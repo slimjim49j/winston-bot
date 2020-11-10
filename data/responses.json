@@ -1,0 +1,57 @@
+{
+    "AboutGeneral": "The Pythagorean Theorem describes the relationship between the sides of a right triangle.",
+    "AboutMathTerm": {
+        "type": "dynamic response",
+        "key": "mathterm",
+        "Triangle": "A triangle is a three sided shape",
+        "Right Triangle": "A right triangle is a type of triangle that contains a 90 degree angle, also known as a right angle",
+        "Angle": "An angle is a measure of the space between two intersecting lines where they meet",
+        "Right Angle": "A right angle is an angle whose measure is 90 degrees",
+        "Hypotenuse": "The hypotenuse is the longest side of a triangle, found opposite of the right angle in right triangles",
+        "Square Root": "The square root of a number produces that number when multiplied by itself, for example: 5 is the square root of 25",
+        "Principal Root": "When taking the square root of a number, there is both a positive and negative solution, the principle root is specific to the positive solution",
+        "Leg": "The shorter sides of a right triangle, also known as 'legs', are the two other sides that aren't the hypotenuse"
+    },
+    "AboutVariable": {
+        "type": "dynamic response",
+        "key": "MathVariable",
+        "a": "The variable 'a' represents the length of one of the shorter sides of the triangle",
+        "b": "The variable 'a' represents the length of one of the shorter sides of the triangle",
+        "c": "The variable 'c' represents the length of the hypotenuse"
+    },
+    "GeneralInventDate": "The Pythagorean Theorem was discovered in 1900 B.C. in ancient Babylon and Egypt",
+    "GeneralInventor": "While the Pythagorean Theorem was named after Pythagoras, a Greek philosopher, there is also proof that Babylonian mathemeticians discovered it around a thousand years earlier",
+    "GeneralRealUseCases": [
+        "There are lots of use cases! One important consequence of the Pythagorean Theorem is the distance formula, which allows you to find the distance between any two points along a straight line",
+        "Pretty much any equation involving a square is also applicable to the Pythaogrean Theorem",
+        "In Physics, an object's kinetic energy can be calculated with ```1/2 m v^2``` (m = mass, v = velocity)",
+        "In this case the kinetic energy from a car traveling at 50 mph is the same as the combined energy of two other cars of the same mass traveling at 30 mph and 40 mph"
+    ],
+    "GeneralSpecificUseCases": "Whenever you are dealing with right triangles, and need to find the length of a third side",
+    "TeachDerivation": {
+
+    },
+    "TeachExample": {
+        "type": "teach",
+        "payload": [
+            {
+                "text": "This is a triangle",
+                "draw": [
+                    {
+                        "type": "line",
+                        "pos": [500, 500, 0],
+                        "points": [[0,100, 0], [100, 0, 0], [100, 100, 0], [0, 100, 0]],
+                        "material": {
+                            "color": "0xaa0000", "linewidth": 10
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "TeachHypotenuse": {
+        
+    },
+    "TeachSquareRoot": "",
+    "TeachSteps": ""
+}

@@ -1,0 +1,391 @@
+/* shared botkit ui styles */
+* {
+  box-sizing: border-box; }
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  background-color: #FFF;
+  font-family: 'helvetica', sans-serif; }
+
+.wrapper {
+  background-color: transparent;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  max-width: 1000px;
+  padding-right: 5%; }
+  .wrapper:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+.box {
+  border: 2px solid #CCC;
+  padding: 1rem calc(1rem - 2px);
+  margin-bottom: 1rem; }
+  .box:after {
+    content: "";
+    display: table;
+    clear: both; }
+  .box h1,
+  .box h2,
+  .box h3 {
+    margin-top: 0; }
+
+footer {
+  text-align: center; }
+
+.hero {
+  text-align: center;
+  padding: 2rem; }
+  .hero h1 {
+    font-size: 4rem;
+    margin: 0; }
+
+a {
+  color: #a795ef; }
+
+.copyurl {
+  width: 100%;
+  font-size: 1.25rem; }
+
+div.input label {
+  font-weight: bold;
+  font-size: smaller; }
+
+.addon {
+  display: flex;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 5px;
+  background: #F0F0F0; }
+  .addon input,
+  .addon textarea {
+    flex-grow: 1;
+    border: 0;
+    background: transparent; }
+  .addon button {
+    flex-grow: 0;
+    background: transparent;
+    border: 1px solid #999;
+    border-radius: 6px;
+    font-weight: bold; }
+    .addon button.textarea {
+      align-self: flex-start;
+      padding: 0.5rem; }
+    .addon button:hover {
+      background: #FFF;
+      color: #a795ef; }
+
+div.hr {
+  border: 1px dashed #ccc;
+  width: 10%;
+  margin: 4rem auto;
+  height: 1px; }
+
+a.button {
+  border: 2px solid #a795ef;
+  font-weight: bold;
+  margin: 0;
+  border-radius: 3px;
+  display: inline-block;
+  padding: 0.5rem 2rem;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  background-color: #FFF;
+  transition: box-shadow 0.1s linear; }
+  a.button:hover {
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1); }
+
+/* chat client */
+.winston-view .wrapper {
+  height: fit-content; }
+
+.winston-view #message-window .powered-by,
+.winston-view #message-window .message-history {
+  display: none; }
+
+#message-window {
+  background-color: #ffffff75;
+  /*height: 500px;
+  width: 320px;*/
+  height: 100%;
+  width: 100%;
+  border-left: 1px solid #CCC;
+  border-right: 1px solid #CCC;
+  /*margin: 2rem auto;*/
+  display: flex;
+  flex-direction: column;
+  font-family: 'helvetica', sans-serif; }
+  #message-window .disconnected {
+    background: #FFFFCC;
+    padding: 0.25rem; }
+  #message-window.connected .disconnected {
+    display: none; }
+  #message-window .offline {
+    display: none; }
+  #message-window.offline .disconnected {
+    display: none; }
+  #message-window.offline .offline {
+    background: #FF0000;
+    color: #FFF;
+    padding: 0.25rem;
+    display: block; }
+  #message-window .powered-by {
+    flex-shrink: 0;
+    text-align: center;
+    border-bottom: 1px solid #CCC;
+    font-size: 14px;
+    padding: 0.25rem;
+    color: #666; }
+    #message-window .powered-by a {
+      text-decoration: none;
+      color: #666; }
+    #message-window .powered-by img {
+      position: relative;
+      top: 2px; }
+  #message-window .message-history {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column-reverse;
+    overflow-y: auto; }
+    #message-window .message-history #message-list div {
+      margin: 0.25rem;
+      clear: both; }
+  #message-window #message-template {
+    display: none; }
+  #message-window .message {
+    font-size: 14px;
+    padding: 0.5rem;
+    background: #F0F0F0;
+    color: #333;
+    border-radius: 5px;
+    width: auto;
+    display: inline-block;
+    max-width: 75%; }
+  #message-window .file-attachment {
+    background: #F0F0F0;
+    color: #333;
+    border-radius: 5px;
+    display: inline-block;
+    max-width: 75%; }
+    #message-window .file-attachment img {
+      max-width: 100%;
+      display: block; }
+  #message-window .button-message {
+    margin: 1rem 0;
+    border-radius: 4px;
+    border-color: orange;
+    border-style: solid;
+    color: orange;
+    border-width: 1px;
+    padding: 0.25rem 1rem;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+    display: block; }
+  #message-window .message p {
+    margin-top: 0;
+    margin-bottom: 0.5rem; }
+  #message-window .message p:last-child {
+    margin-bottom: 0; }
+  #message-window .message.outgoing {
+    float: right;
+    background: #a795ef;
+    color: white; }
+  #message-window #message-replies {
+    text-align: center;
+    overflow-x: auto;
+    flex-shrink: 0;
+    -webkit-overflow-scrolling: touch;
+    /* Lets it scroll lazy */ }
+    #message-window #message-replies ul {
+      list-style-type: none;
+      margin: 0px auto;
+      padding: 0; }
+      #message-window #message-replies ul li {
+        display: inline-block;
+        margin: 0.5rem;
+        margin-left: 0; }
+    #message-window #message-replies a {
+      text-decoration: none;
+      display: block;
+      border: 1px solid #a795ef;
+      color: #a795ef;
+      border-radius: 16px;
+      padding: 0.25rem 1rem;
+      font-size: 14px;
+      cursor: pointer; }
+      #message-window #message-replies a:hover {
+        background: #a795ef;
+        color: #FFF; }
+  #message-window footer {
+    position: relative;
+    padding: 0.25rem;
+    border-top: 1px solid #CCC; }
+    #message-window footer input[type="text"] {
+      width: 100%;
+      font-size: 1.25rem;
+      outline: none;
+      border: none; }
+    #message-window footer button {
+      width: 40px;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      color: blue;
+      font-weight: bold; }
+  #message-window form {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0.25rem; }
+  #message-window .messenger-actions {
+    position: absolute;
+    top: 0;
+    right: 0; }
+  #message-window .switch-chat-btn {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: none; }
+
+/* typing indicator CSS based on code by Joseph Fusco -> https://codepen.io/fusco/pen/XbpaYv */
+.typing-indicator {
+  display: table;
+  margin: 0 auto;
+  position: relative; }
+  .typing-indicator span {
+    height: 5px;
+    width: 5px;
+    float: left;
+    margin: 0 1px;
+    background-color: #333;
+    display: block;
+    border-radius: 50%;
+    opacity: 0.4; }
+    .typing-indicator span:nth-of-type(1) {
+      animation: 1s blink infinite 0.3333s; }
+    .typing-indicator span:nth-of-type(2) {
+      animation: 1s blink infinite 0.6666s; }
+    .typing-indicator span:nth-of-type(3) {
+      animation: 1s blink infinite 0.9999s; }
+
+@keyframes blink {
+  50% {
+    opacity: 1; } }
+/* special styles for homepage */
+#home {
+  position: relative;
+  max-width: 650px;
+  margin: auto; }
+  #home:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+#homepage_bot {
+  width: 400px;
+  height: 450px;
+  float: left;
+  border: 5px solid #333;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5); }
+  #homepage_bot iframe {
+    border: 0;
+    height: 100%;
+    width: 100%; }
+
+#welcome {
+  margin-left: 440px; }
+
+header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  position: sticky;
+  background-color: #0a2a66;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  height: 50px; }
+
+.main-logo {
+  display: inline-block;
+  fill: white;
+  margin: auto; }
+
+.main-lesson-container {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 50px); }
+
+.canvas-container {
+  background-color: whitesmoke;
+  width: 100%;
+  height: 100%; }
+
+.canvas-wrapper {
+  width: 100%;
+  height: 100%; }
+
+.lesson-canvas {
+  width: 100%;
+  height: 100%; }
+
+.winston-view .bot-wrapper {
+  display: initial; }
+
+.bot-wrapper {
+  display: none;
+  position: absolute;
+  right: 5%;
+  top: 80%;
+  width: 8%; }
+
+.bot-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 100%; }
+
+.bot-body {
+  background-color: yellow;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 3px solid #102f4d;
+  border-radius: 50%; }
+
+.bot-eye-container {
+  margin-top: 27%; }
+
+.bot-eye {
+  display: inline-block;
+  background-color: black;
+  width: 15%;
+  height: 15%;
+  border-radius: 50%;
+  margin-left: 35%;
+  margin-bottom: 0%; }
+
+.bot-eye:first-of-type {
+  margin-left: 5%;
+  margin-bottom: 3%; }
+
+.bot-mouth {
+  background-color: red;
+  width: 45%;
+  height: 45%;
+  border-radius: 50%;
+  margin-left: 10%; }
+
+/*# sourceMappingURL=styles.css.map */

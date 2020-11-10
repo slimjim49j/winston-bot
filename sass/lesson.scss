@@ -1,0 +1,92 @@
+.main-lesson-container {
+    position: relative;
+    
+    width: 100%;
+    height: calc(100% - 50px);
+}
+
+.canvas-container {
+    background-color: whitesmoke;
+    
+    width: 100%;
+    height: 100%;
+}
+
+.canvas-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.lesson-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+
+.winston-view {
+    .bot-wrapper {
+        display: initial;
+    }
+}
+
+.bot-wrapper {
+    display: none;
+    position: absolute;
+    right: 5%;
+    top: 80%;
+    
+    width: 8%;
+}
+
+.bot-container {
+    position: relative;
+
+    width: 100%;
+    height: 0;
+    padding-top: 100%;
+}
+
+.bot-body {
+    background-color: yellow;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    border: 3px solid rgb(16, 47, 77);
+    border-radius: 50%;
+}
+
+.bot-eye-container {
+margin-top: 27%;    
+}
+
+.bot-eye {
+    display: inline-block;
+    background-color: black;
+
+    width: 15%;
+    height: 15%;
+
+    border-radius: 50%;
+    margin-left: 35%;
+    margin-bottom: 0%;
+}
+
+.bot-eye:first-of-type {
+    margin-left: 5%;
+    margin-bottom: 3%;
+}
+
+.bot-mouth {
+    background-color: red;
+
+    width: 45%;
+    height: 45%;
+    border-radius: 50%;
+    margin-left: 10%
+}
