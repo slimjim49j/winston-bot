@@ -20,6 +20,11 @@ var Botkit = {
     reconnect_count: 0,
     guid: null,
     current_user: null,
+    responses: {
+        idx: 0,
+        queue: [],
+        userSent: false,
+    },
     on: function (event, handler) {
         this.messageWindow.addEventListener(event, function (evt) {
             handler(evt.detail);
@@ -256,6 +261,71 @@ var Botkit = {
             delete (that.next_line);
         }
     },
+    renderWinstonMessage: function() {
+        let message = this.responses.queue[this.responses.idx];
+        if (message.text) {
+            message.html = converter.makeHtml(message.text);
+            document.querySelector(".bot-dialogue").innerHTML = message.html;
+        }
+
+        const next = document.querySelector("#dialogue-next");
+        const back = document.querySelector("#dialogue-back");
+        // TODO:
+        // when arr messages rendered, next button is disabled at first
+        // message rendering also doesn't work for initial message and examples
+        // should probably just get rid of example type
+        
+        if(!this.responses.queue[this.responses.idx+1]) next.disabled = true;
+        else next.disabled = false;
+        if(!this.responses.queue[this.responses.idx-1]) back.disabled = true;
+        else back.disabled = false;
+    },
+    renderQuickReplies: function(message) {
+        let that = this;
+        that.clearReplies();
+        if (message.quick_replies) {
+
+            var list = document.createElement('ul');
+
+            var elements = [];
+            for (var r = 0; r < message.quick_replies.length; r++) {
+                (function (reply) {
+
+                    var li = document.createElement('li');
+                    var el = document.createElement('a');
+                    el.innerHTML = reply.title;
+                    el.href = '#';
+
+                    el.onclick = function () {
+                        that.quickReply(reply.payload);
+                    }
+
+                    li.appendChild(el);
+                    list.appendChild(li);
+                    elements.push(li);
+
+                })(message.quick_replies[r]);
+            }
+
+            that.replies.appendChild(list);
+
+            // uncomment this code if you want your quick replies to scroll horizontally instead of stacking
+            // var width = 0;
+            // // resize this element so it will scroll horizontally
+            // for (var e = 0; e < elements.length; e++) {
+            //     width = width + elements[e].offsetWidth + 18;
+            // }
+            // list.style.width = width + 'px';
+
+            if (message.disable_input) {
+                that.input.disabled = true;
+            } else {
+                that.input.disabled = false;
+            }
+        } else {
+            that.input.disabled = false;
+        }
+    },
     triggerScript: function (script, thread) {
         this.deliverMessage({
             type: 'trigger',
@@ -386,7 +456,9 @@ var Botkit = {
         });
 
         that.on('sent', function () {
-            // do something after sending
+            // that.responses.queue = [];
+            // that.responses.idx = 0;
+            that.responses.userSent = true;
         });
 
         that.on('message', function (message) {
@@ -394,8 +466,14 @@ var Botkit = {
             console.log('RECEIVED MESSAGE', message);
             const lessonContainer = document.querySelector(".main-lesson-container");
             
+            that.responses.queue.push(message);
+            if (that.responses.userSent) {
+                that.responses.idx = that.responses.queue.length-1;
+                // update displayed message
+                that.responses.userSent = false;
+            }
+            that.renderWinstonMessage();
             that.renderMessage(message);
-
         });
 
         that.on('message', function (message) {
@@ -406,49 +484,7 @@ var Botkit = {
 
 
         that.on('message', function (message) {
-            that.clearReplies();
-            if (message.quick_replies) {
-
-                var list = document.createElement('ul');
-
-                var elements = [];
-                for (var r = 0; r < message.quick_replies.length; r++) {
-                    (function (reply) {
-
-                        var li = document.createElement('li');
-                        var el = document.createElement('a');
-                        el.innerHTML = reply.title;
-                        el.href = '#';
-
-                        el.onclick = function () {
-                            that.quickReply(reply.payload);
-                        }
-
-                        li.appendChild(el);
-                        list.appendChild(li);
-                        elements.push(li);
-
-                    })(message.quick_replies[r]);
-                }
-
-                that.replies.appendChild(list);
-
-                // uncomment this code if you want your quick replies to scroll horizontally instead of stacking
-                // var width = 0;
-                // // resize this element so it will scroll horizontally
-                // for (var e = 0; e < elements.length; e++) {
-                //     width = width + elements[e].offsetWidth + 18;
-                // }
-                // list.style.width = width + 'px';
-
-                if (message.disable_input) {
-                    that.input.disabled = true;
-                } else {
-                    that.input.disabled = false;
-                }
-            } else {
-                that.input.disabled = false;
-            }
+            that.renderQuickReplies(message);
         });
 
         that.on("teach", function(message) {
@@ -520,7 +556,26 @@ var Botkit = {
     const lessonContainer = document.querySelector(".main-lesson-container");
     switchBtn.addEventListener("click", (e) => {
         lessonContainer.classList.toggle("winston-view");
-    })
+        if (!Array.from(lessonContainer.classList).includes("winston-view")) Botkit.renderQuickReplies(Botkit.responses.queue[Botkit.responses.queue.length-1]);
+    });
+
+    document.querySelector("#dialogue-next").addEventListener("click", e => {
+        let responses = Botkit.responses;
+        if (responses.idx+1 < responses.queue.length) {
+            responses.idx++;
+            Botkit.renderWinstonMessage();
+            Botkit.renderQuickReplies(responses.queue[responses.idx]);
+        }
+    });
+    document.querySelector("#dialogue-back").addEventListener("click", e => {
+        let responses = Botkit.responses;
+
+        if (responses.idx > 0) {
+            responses.idx--;
+            Botkit.renderWinstonMessage();
+            Botkit.renderQuickReplies(responses.queue[responses.idx]);
+        }
+    });
     
     Botkit.boot();
 })();

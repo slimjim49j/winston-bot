@@ -36,9 +36,9 @@
     display: none;
     position: absolute;
     right: 5%;
-    top: 80%;
+    top: 60%;
     
-    width: 8%;
+    width: 18%;
 }
 
 .bot-container {
@@ -48,6 +48,29 @@
     height: 0;
     padding-top: 100%;
 }
+
+.bot-dialogue-container {
+    background-color: rgba(128, 128, 128, 0.185);
+    position: absolute;
+    top: 0;
+    left: -100%;
+    
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border-radius: 25px 25px 0 25px;
+
+    button {
+        background-color: lightgray;
+        border: 1px solid gray;
+        border-radius: 8px;
+    }
+}
+
+// .bot-dialogue {
+    
+// }
+
 
 .bot-body {
     background-color: yellow;
