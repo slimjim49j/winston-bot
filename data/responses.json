@@ -29,26 +29,32 @@
     ],
     "GeneralSpecificUseCases": "Whenever you are dealing with right triangles, and need to find the length of a third side",
     "TeachDerivation": {
-
-    },
-    "TeachExample": {
         "type": "teach",
         "payload": [
-            {
-                "text": "This is a triangle",
-                "draw": [
-                    {
-                        "type": "line",
-                        "pos": [500, 500, 0],
-                        "points": [[0,100, 0], [100, 0, 0], [100, 100, 0], [0, 100, 0]],
-                        "material": {
-                            "color": "0xaa0000", "linewidth": 10
-                        }
-                    }
-                ]
-            }
+            {}
         ]
     },
+    "TeachExample": [
+        {
+            "type": "teach",
+            "payload": [
+                {
+                    "text": "This is a triangle",
+                    "draw": [
+                        {
+                            "type": "line",
+                            "pos": [500, 500, 0],
+                            "points": [[0,100, 0], [100, 0, 0], [100, 100, 0], [0, 100, 0]],
+                            "material": {
+                                "color": "0xaa0000", "linewidth": 10
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "Would you like to go over another example?"
+    ],
     "TeachHypotenuse": {
         
     },

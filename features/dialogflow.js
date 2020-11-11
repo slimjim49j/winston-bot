@@ -65,42 +65,50 @@ async function dialogflowMiddleware(bot, message, next) {
     next();
 }
 
+async function reply(bot, message, res) {
+    if (Array.isArray(res)) {
+        // refact so recursive call on each reply
+        res.forEach(async subRes => {
+            debugger;
+            await reply(bot, message, subRes)
+        });
+
+    } else if (typeof res === "object" && res !== null) {
+        switch (res.type) {
+            case "dynamic response":
+                if ("key" in res) {
+                    // example of what inside of params could look like:
+                    // { mathterm: { stringValue: 'Triangle', kind: 'stringValue' } }
+                    const prop = params[res.key];
+                    await reply(bot, message, res[prop[prop.kind]]);
+                }
+                break;
+            case "teach":
+                await bot.reply(message, res);
+                break;
+            case "random":
+                if ("replies" in res) {
+                    const idx = Math.floor(Math.random() * res.replies.length);
+                    await reply(bot, message, res.replies[idx]);
+                }
+                break;
+        }
+    } else {
+        debugger;
+        await bot.reply(message, res);
+    }
+}
+
 module.exports = function (controller) {
     controller.middleware.ingest.use(dialogflowMiddleware);
 
     controller.on("message", async (bot, message) => {
         const { intent, fulfillmentText, action, params } = message.dialogflow;
 
-        const res = responses[intent];
+        let res = responses[intent];
         
         if (res) {
-            if (Array.isArray(res)) {
-                // refact so recursive call on each reply
-                res.forEach(async reply => await bot.reply(message, reply));
-            
-            } else if (typeof res === "object" && res !== null) {
-                switch (res.type) {
-                    case "dynamic response":
-                        if ("key" in res) {
-                            // example of what inside of params could look like:
-                            // { mathterm: { stringValue: 'Triangle', kind: 'stringValue' } }
-                            const prop = params[res.key];
-                            await bot.reply(message, res[prop[prop.kind]]);
-                        }
-                        break;
-                    case "teach":
-                        await bot.reply(message, res);
-                        break;
-                    case "random":
-                        if ("replies" in res) {
-                            const idx = Math.floor(Math.random() * res.replies.length);
-                            await bot.reply(message, res.replies[idx]);
-                        }
-                        break;
-                }
-            } else {
-                await bot.reply(message, res);
-            }
+            reply(bot, message, res);
         }
 
         if (intent === "Default Welcome Intent" || action.includes("smalltalk")) {
