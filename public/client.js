@@ -3,9 +3,7 @@
  * Licensed under the MIT License.
  */
 import { createLine } from "./canvas.js";
-
-var converter = new showdown.Converter();
-converter.setOption('openLinksInNewWindow', true);
+import Chat from "./chat.js";
 
 var Botkit = {
     config: {
@@ -20,11 +18,6 @@ var Botkit = {
     reconnect_count: 0,
     guid: null,
     current_user: null,
-    responses: {
-        idx: 0,
-        queue: [],
-        userSent: false,
-    },
     on: function (event, handler) {
         this.messageWindow.addEventListener(event, function (evt) {
             handler(evt.detail);
@@ -80,8 +73,8 @@ var Botkit = {
             text: text
         };
 
-        this.clearReplies();
-        that.renderMessage(message);
+        chat.clearReplies();
+        chat.renderMessage(message);
 
         that.deliverMessage({
             type: 'message',
@@ -235,96 +228,11 @@ var Botkit = {
             that.trigger(message.type, message);
         });
     },
-    clearReplies: function () {
-        this.replies.innerHTML = '';
-    },
     quickReply: function (payload) {
         this.send(payload);
     },
     focus: function () {
         this.input.focus();
-    },
-    renderMessage: function (message) {
-        var that = this;
-        if (!that.next_line) {
-            that.next_line = document.createElement('div');
-            that.messageList.appendChild(that.next_line);
-        }
-        if (message.text) {
-            message.html = converter.makeHtml(message.text);
-        }
-
-        that.next_line.innerHTML = that.messageTemplate({
-            message: message
-        });
-        if (!message.isTyping) {
-            delete (that.next_line);
-        }
-    },
-    renderWinstonMessage: function() {
-        let message = this.responses.queue[this.responses.idx];
-        if (message.text) {
-            message.html = converter.makeHtml(message.text);
-            document.querySelector(".bot-dialogue").innerHTML = message.html;
-        }
-
-        const next = document.querySelector("#dialogue-next");
-        const back = document.querySelector("#dialogue-back");
-        // TODO:
-        // when arr messages rendered, next button is disabled at first
-        // message rendering also doesn't work for initial message and examples
-        // should probably just get rid of example type
-        
-        if(!this.responses.queue[this.responses.idx+1]) next.disabled = true;
-        else next.disabled = false;
-        if(!this.responses.queue[this.responses.idx-1]) back.disabled = true;
-        else back.disabled = false;
-    },
-    renderQuickReplies: function(message) {
-        let that = this;
-        that.clearReplies();
-        if (message.quick_replies) {
-
-            var list = document.createElement('ul');
-
-            var elements = [];
-            for (var r = 0; r < message.quick_replies.length; r++) {
-                (function (reply) {
-
-                    var li = document.createElement('li');
-                    var el = document.createElement('a');
-                    el.innerHTML = reply.title;
-                    el.href = '#';
-
-                    el.onclick = function () {
-                        that.quickReply(reply.payload);
-                    }
-
-                    li.appendChild(el);
-                    list.appendChild(li);
-                    elements.push(li);
-
-                })(message.quick_replies[r]);
-            }
-
-            that.replies.appendChild(list);
-
-            // uncomment this code if you want your quick replies to scroll horizontally instead of stacking
-            // var width = 0;
-            // // resize this element so it will scroll horizontally
-            // for (var e = 0; e < elements.length; e++) {
-            //     width = width + elements[e].offsetWidth + 18;
-            // }
-            // list.style.width = width + 'px';
-
-            if (message.disable_input) {
-                that.input.disabled = true;
-            } else {
-                that.input.disabled = false;
-            }
-        } else {
-            that.input.disabled = false;
-        }
     },
     triggerScript: function (script, thread) {
         this.deliverMessage({
@@ -414,15 +322,7 @@ var Botkit = {
 
         var that = this;
 
-
         that.messageWindow = document.getElementById("message-window");
-
-        that.messageList = document.getElementById("message-list");
-
-        var source = document.getElementById('message-template').innerHTML;
-        that.messageTemplate = Handlebars.compile(source);
-
-        that.replies = document.getElementById('message-replies');
 
         that.input = document.getElementById('messenger-input');
 
@@ -449,8 +349,8 @@ var Botkit = {
         });
 
         that.on('typing', function () {
-            that.clearReplies();
-            that.renderMessage({
+            chat.clearReplies();
+            chat.renderMessage({
                 isTyping: true
             });
         });
@@ -458,7 +358,7 @@ var Botkit = {
         that.on('sent', function () {
             // that.responses.queue = [];
             // that.responses.idx = 0;
-            that.responses.userSent = true;
+            chat.userSent = true;
         });
 
         that.on('message', function (message) {
@@ -466,14 +366,14 @@ var Botkit = {
             console.log('RECEIVED MESSAGE', message);
             const lessonContainer = document.querySelector(".main-lesson-container");
             
-            that.responses.queue.push(message);
-            if (that.responses.userSent) {
-                that.responses.idx = that.responses.queue.length-1;
+            chat.responses.push(message);
+            if (chat.userSent) {
+                chat.currIdx = chat.responses.length-1;
                 // update displayed message
-                that.responses.userSent = false;
+                chat.userSent = false;
             }
-            that.renderWinstonMessage();
-            that.renderMessage(message);
+            chat.renderWinstonMessage();
+            chat.renderMessage(message);
         });
 
         that.on('message', function (message) {
@@ -484,14 +384,14 @@ var Botkit = {
 
 
         that.on('message', function (message) {
-            that.renderQuickReplies(message);
+            chat.renderQuickReplies(message);
         });
 
         that.on("teach", function(message) {
             console.log(message);
             message.payload.forEach(step => {
                 if ("text" in step) {
-                    that.renderMessage({ text: step.text });
+                    chat.renderMessage({ text: step.text });
                 }
                 if ("draw" in step) {
                     step.draw.forEach(el => {
@@ -506,7 +406,7 @@ var Botkit = {
         that.on('history_loaded', function (history) {
             if (history) {
                 for (var m = 0; m < history.length; m++) {
-                    that.renderMessage({
+                    chat.renderMessage({
                         text: history[m].text,
                         type: history[m].type == 'message_received' ? 'outgoing' : 'incoming', // set appropriate CSS class
                     });
@@ -538,44 +438,11 @@ var Botkit = {
     }
 };
 
+let chat = new Chat(Botkit);
 
 (function () {
     // your page initialization code here
     // the DOM will be available here
-    document.querySelector(".messenger-form")
-        .addEventListener("submit", e => Botkit.send(Botkit.input.value, e));
-    document.querySelector(".submit-text")
-        .addEventListener("click", (e) => Botkit.send(Botkit.input.value, e));
-
-    const chatInput = document.querySelector("#messenger-input");
-    const footer = document.querySelector("#message-window footer");
-    chatInput.addEventListener("focus", () => footer.classList.add("focus"));
-    chatInput.addEventListener("blur", () => footer.classList.remove("focus"));
-
-    const switchBtn = document.querySelector(".switch-chat-btn")
-    const lessonContainer = document.querySelector(".main-lesson-container");
-    switchBtn.addEventListener("click", (e) => {
-        lessonContainer.classList.toggle("winston-view");
-        if (!Array.from(lessonContainer.classList).includes("winston-view")) Botkit.renderQuickReplies(Botkit.responses.queue[Botkit.responses.queue.length-1]);
-    });
-
-    document.querySelector("#dialogue-next").addEventListener("click", e => {
-        let responses = Botkit.responses;
-        if (responses.idx+1 < responses.queue.length) {
-            responses.idx++;
-            Botkit.renderWinstonMessage();
-            Botkit.renderQuickReplies(responses.queue[responses.idx]);
-        }
-    });
-    document.querySelector("#dialogue-back").addEventListener("click", e => {
-        let responses = Botkit.responses;
-
-        if (responses.idx > 0) {
-            responses.idx--;
-            Botkit.renderWinstonMessage();
-            Botkit.renderQuickReplies(responses.queue[responses.idx]);
-        }
-    });
     
     Botkit.boot();
 })();
