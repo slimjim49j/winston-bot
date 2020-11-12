@@ -1,6 +1,10 @@
 const dialogflow = require('@google-cloud/dialogflow');
-const service = require('../keys.json');
-const { project_id: projectId } = service;
+let projectId;
+if (process.env.NODE_ENV === "production") {
+    projectId = require(process.env.GOOGLE_APPLICATION_CREDENTIALS).project_id;
+} else {
+    projectId = require('../keys.json').project_id;
+}
 const sessionId = Math.floor(Math.random() * 10000).toString();
 const responses = require("../data/responses.json");
 
@@ -93,7 +97,7 @@ async function reply(bot, message, res) {
                 }
                 break;
             case "step":
-                
+
         }
     } else {
         debugger;
