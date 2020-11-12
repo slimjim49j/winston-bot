@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
-import { createLine } from "./canvas.js";
+import { drawCanvas } from "./canvas.js";
 import Chat from "./chat.js";
 
 var Botkit = {
@@ -387,19 +387,10 @@ var Botkit = {
             chat.renderQuickReplies(message);
         });
 
-        that.on("teach", function(message) {
+        that.on("draw", function(message) {
             console.log(message);
-            message.payload.forEach(step => {
-                if ("text" in step) {
-                    chat.renderMessage({ text: step.text });
-                }
-                if ("draw" in step) {
-                    step.draw.forEach(el => {
-                        if (el.type === "line") {
-                            createLine(el.pos, el.points, el.material);
-                        }
-                    })
-                }
+            message.draw.forEach(step => {
+                drawCanvas(step);
             })
         });
 

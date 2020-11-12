@@ -17,5 +17,22 @@ module.exports = function(controller) {
                 }
             ]
         });
+        await bot.reply(message, {
+            type: "draw",
+            draw: [
+                {
+                    "type": "label",
+                    "text": "Use your mouse to pan, scroll to zoom",
+                    "pos": [200, 80, 0],
+                    "parent": ""
+                },
+                {
+                    "type": "label",
+                    "text": "Pythagorean Thoerem",
+                    "pos": [200, 60, 0],
+                    "parent": ""
+                },
+            ]
+        })
     });
 }

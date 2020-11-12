@@ -48,7 +48,7 @@ footer {
     margin: 0; }
 
 a {
-  color: #a795ef; }
+  color: #2d4dff; }
 
 .copyurl {
   width: 100%;
@@ -80,7 +80,7 @@ div.input label {
       padding: 0.5rem; }
     .addon button:hover {
       background: #FFF;
-      color: #a795ef; }
+      color: #2d4dff; }
 
 div.hr {
   border: 1px dashed #ccc;
@@ -89,7 +89,7 @@ div.hr {
   height: 1px; }
 
 a.button {
-  border: 2px solid #a795ef;
+  border: 2px solid #2d4dff;
   font-weight: bold;
   margin: 0;
   border-radius: 3px;
@@ -197,7 +197,7 @@ a.button {
     margin-bottom: 0; }
   #message-window .message.outgoing {
     float: right;
-    background: #a795ef;
+    background: #2d4dff;
     color: white; }
   #message-window #message-replies {
     text-align: center;
@@ -216,14 +216,14 @@ a.button {
     #message-window #message-replies a {
       text-decoration: none;
       display: block;
-      border: 1px solid #a795ef;
-      color: #a795ef;
+      border: 1px solid #2d4dff;
+      color: #2d4dff;
       border-radius: 16px;
       padding: 0.25rem 1rem;
       font-size: 14px;
       cursor: pointer; }
       #message-window #message-replies a:hover {
-        background: #a795ef;
+        background: #2d4dff;
         color: #FFF; }
   #message-window footer {
     position: relative;
@@ -332,12 +332,24 @@ header {
   height: 100%; }
 
 .canvas-wrapper {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   height: 100%; }
 
 .lesson-canvas {
   width: 100%;
   height: 100%; }
+
+.label-renderer {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; }
+
+.label {
+  background-color: rgba(255, 255, 255, 0.746); }
 
 .winston-view .bot-wrapper {
   display: initial; }
@@ -346,7 +358,7 @@ header {
   display: none;
   position: absolute;
   right: 5%;
-  top: 60%;
+  top: 55%;
   width: 18%; }
 
 .bot-container {

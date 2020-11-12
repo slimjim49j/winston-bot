@@ -35,24 +35,40 @@
         ]
     },
     "TeachExample": [
+        "Let's go over an example",
         {
-            "type": "teach",
-            "payload": [
+            "type": "draw",
+            "draw": [
                 {
-                    "text": "This is a triangle",
-                    "draw": [
-                        {
-                            "type": "line",
-                            "pos": [500, 500, 0],
-                            "points": [[0,100, 0], [100, 0, 0], [100, 100, 0], [0, 100, 0]],
-                            "material": {
-                                "color": "0xaa0000", "linewidth": 10
-                            }
-                        }
-                    ]
+                    "type": "line",
+                    "pos": [300, 300, 0],
+                    "points": [[0,300, 0], [400, 0, 0], [400, 300, 0], [0, 300, 0]],
+                    "material": {
+                        "color": "0xaa0000", "linewidth": 10
+                    },
+                    "name": "Example1Triangle"
+                },
+                {
+                    "type": "label",
+                    "text": "c: 5",
+                    "pos": [200, 150, 0],
+                    "parent": "Example1Triangle"
+                },
+                {
+                    "type": "label",
+                    "text": "b: 4",
+                    "pos": [200, 300, 0],
+                    "parent": "Example1Triangle"
+                },
+                {
+                    "type": "label",
+                    "text": "a: 3",
+                    "pos": [400, 150, 0],
+                    "parent": "Example1Triangle"
                 }
             ]
         },
+        "testing",
         "Would you like to go over another example?"
     ],
     "TeachHypotenuse": {

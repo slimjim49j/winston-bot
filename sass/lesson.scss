@@ -1,3 +1,7 @@
+// * {
+//   border: 1px solid #f00 !important;
+// }
+
 .main-lesson-container {
     position: relative;
     
@@ -13,6 +17,14 @@
 }
 
 .canvas-wrapper {
+    // &:after {
+    //     content: "";
+    //     display: table;
+    //     clear: both;
+    // }
+    position: relative;
+    overflow: hidden;
+    
     width: 100%;
     height: 100%;
 }
@@ -20,6 +32,20 @@
 .lesson-canvas {
     width: 100%;
     height: 100%;
+}
+
+.label-renderer {
+    position: absolute;
+    top: 0;
+    
+    width: 100%;
+    height: 100%;
+    
+    pointer-events: none;
+}
+
+.label {
+    background-color: rgba(255, 255, 255, 0.746);
 }
 
 
@@ -36,7 +62,7 @@
     display: none;
     position: absolute;
     right: 5%;
-    top: 60%;
+    top: 55%;
     
     width: 18%;
 }

@@ -83,7 +83,7 @@ async function reply(bot, message, res) {
                     await reply(bot, message, res[prop[prop.kind]]);
                 }
                 break;
-            case "teach":
+            case "draw":
                 await bot.reply(message, res);
                 break;
             case "random":
@@ -92,6 +92,8 @@ async function reply(bot, message, res) {
                     await reply(bot, message, res.replies[idx]);
                 }
                 break;
+            case "step":
+                
         }
     } else {
         debugger;

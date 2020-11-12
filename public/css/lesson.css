@@ -9,12 +9,24 @@
   height: 100%; }
 
 .canvas-wrapper {
+  position: relative;
+  overflow: hidden;
   width: 100%;
   height: 100%; }
 
 .lesson-canvas {
   width: 100%;
   height: 100%; }
+
+.label-renderer {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; }
+
+.label {
+  background-color: rgba(255, 255, 255, 0.746); }
 
 .winston-view .bot-wrapper {
   display: initial; }
@@ -23,7 +35,7 @@
   display: none;
   position: absolute;
   right: 5%;
-  top: 60%;
+  top: 55%;
   width: 18%; }
 
 .bot-container {

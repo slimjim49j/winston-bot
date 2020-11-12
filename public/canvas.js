@@ -1,8 +1,14 @@
 import * as THREE from 'https://unpkg.com/three@0.121.1/build/three.module.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.121.1/examples/jsm/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'https://unpkg.com/three@0.121.1/examples/jsm/renderers/CSS2DRenderer.js';
 
 const canvas = document.querySelector(".lesson-canvas");
 const renderer = new THREE.WebGLRenderer({ canvas });
+
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.domElement.classList.add('label-renderer');
+
+document.querySelector(".canvas-wrapper").appendChild(labelRenderer.domElement);
 
 const camera = new THREE.OrthographicCamera(0, canvas.width, 0, canvas.height, 1, 1000);
 
@@ -31,7 +37,21 @@ controls.update();
 // floor.position.x = 50;
 // floor.position.y = 100;
 
-export function createLine(linePos, pointCoords, matProps) {
+
+export function drawCanvas(el) {
+    switch (el.type) {
+        case "line":
+            createLine(el);
+            break;
+        case "label":
+            createLabel(el);
+            break;
+    }
+}
+
+let objects = {};
+
+function createLine({ pos: linePos, points: pointCoords, material: matProps, name }) {
     const points = [];
     pointCoords.forEach(pos => points.push(new THREE.Vector3(...pos)));
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
@@ -41,6 +61,18 @@ export function createLine(linePos, pointCoords, matProps) {
     const line = new THREE.Line(geometry, material);
     line.position.set(...linePos);
     scene.add(line);
+    objects[name] = line;
+}
+
+function createLabel({ text, pos, parent }) {
+    const div = document.createElement('div');
+    div.className = 'label';
+    div.textContent = text;
+    div.style.marginTop = '-1em';
+    const label = new CSS2DObject(div);
+    label.position.set(...pos);
+    if (parent.length) objects[parent].add(label);
+    else scene.add(label);
 }
 
 
@@ -51,8 +83,10 @@ window.addEventListener("resize", handleResize);
 
 function handleResize() {
     const canvas = renderer.domElement;
+    const labelDiv = labelRenderer.domElement;
 
     renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+    labelRenderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
     // camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.right = canvas.clientWidth;
@@ -63,6 +97,7 @@ handleResize();
 
 function render() {
     renderer.render(scene, camera);
+    labelRenderer.render(scene, camera);
     requestAnimationFrame(render);
 }
 requestAnimationFrame(render)
